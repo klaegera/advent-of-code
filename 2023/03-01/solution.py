@@ -11,7 +11,7 @@ symbols = [
 
 result = 0
 
-number_regex = re.compile("\d+")
+number_regex = re.compile(r"\d+")
 for i, line in enumerate(input):
     for match in number_regex.finditer(line):
         l, r = match.start() - 1, match.end() + 1
