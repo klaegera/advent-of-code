@@ -24,15 +24,19 @@ for map in maps:
     new_ranges = []
     while seeds:
         start, length = seeds.pop()
-        x = bisect.bisect_left(map, (start, float("inf"), float("inf"))) - 1
-        if x >= 0 and start < map[x][1]:
-            new_start = start - map[x][0] + map[x][2]
-            new_length = min(length, map[x][1] - start)
-            new_ranges.append((new_start, new_length))
-            if new_length < length:
-                seeds.append((start + new_length, length - new_length))
-        else:
-            new_ranges.append((start, length))
+        new_start, new_length = start, length
+
+        x = bisect.bisect(map, (start, float("inf"), float("inf")))
+
+        if x > 0 and start < map[x - 1][1]:
+            new_start = start - map[x - 1][0] + map[x - 1][2]
+            new_length = min(length, map[x - 1][1] - start)
+        elif x < len(map):
+            new_length = min(length, map[x][0] - start)
+
+        new_ranges.append((new_start, new_length))
+        if new_length < length:
+            seeds.append((start + new_length, length - new_length))
     seeds = new_ranges
 
 print(min(seeds)[0])
