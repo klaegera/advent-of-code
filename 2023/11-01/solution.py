@@ -14,15 +14,11 @@ for r, row in enumerate(input):
 
 gc.sort()
 
-result = sum(
-    2 * sum(i * v for i, v in enumerate(g)) - (len(g) - 1) * sum(g) for g in (gr, gc)
-)
 
-er = set(range(len(input))) - set(gr)
-ec = set(range(len(input[0]))) - set(gc)
-
-result += sum(
-    (x := bisect(g, v)) * (len(g) - x) for g, eg in ((gr, er), (gc, ec)) for v in eg
-)
+result = 0
+for g in (gr, gc):
+    result += sum(v * (2 * i - len(g) + 1) for i, v in enumerate(g))
+    empty = set(range(g[-1])) - set(g)
+    result += sum((x := bisect(g, v)) * (len(g) - x) for v in empty)
 
 print(result)
