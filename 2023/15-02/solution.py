@@ -18,16 +18,13 @@ for step in steps:
         hash %= 256
 
     if focus:
-        if label not in boxes[hash]:
-            boxes[hash][label] = [focus]
-        else:
-            boxes[hash][label][0] = focus
+        boxes[hash][label] = focus
     else:
         boxes[hash].pop(label, None)
 
 result = 0
 for b, box in enumerate(boxes):
-    for l, [lens] in enumerate(box.values()):
+    for l, lens in enumerate(box.values()):
         result += (b + 1) * (l + 1) * int(lens)
 
 print(result)
