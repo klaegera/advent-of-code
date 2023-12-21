@@ -3,15 +3,7 @@ with open("input") as f:
 
 # with eval for the lols
 
-accepted = 0
-
-
-def accept(part):
-    global accepted
-    accepted += sum(part.values())
-
-
-workflows = {"A": "accept(part)", "R": "", "accept": accept}
+workflows = {"A": "sum(part.values())", "R": "0"}
 parts = None
 for line in input:
     if not line:
@@ -29,9 +21,11 @@ for line in input:
         )
 
 
+accepted = 0
 for part in parts:
     expr = workflows["in"]
-    while expr:
+    while isinstance(expr, str):
         expr = eval(expr, workflows, {"part": part} | part)
+    accepted += expr
 
 print(accepted)
