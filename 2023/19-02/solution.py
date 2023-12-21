@@ -12,9 +12,9 @@ for line in input:
     workflows[name] = [
         (
             {
-                cond[0][0]: (1, int(cond[0][2:]) - 1)
+                cond[0][0]: (1, int(cond[0][2:]))
                 if cond[0][1] == "<"
-                else (int(cond[0][2:]) + 1, 4000)
+                else (int(cond[0][2:]) + 1, 4001)
             },
             then,
         )
@@ -26,7 +26,7 @@ for line in input:
 
 accepted = []
 
-start = {c: (1, 4000) for c in "xmas"}
+start = {c: (1, 4001) for c in "xmas"}
 q = [(start, "in")]
 while q:
     state, workflow = q.pop()
@@ -40,9 +40,9 @@ while q:
         for cat, (lo, hi) in cond.items():
             slo, shi = state[cat]
             modstate[cat] = (max(lo, slo), min(hi, shi))
-            state[cat] = (hi + 1, shi) if lo == 1 else (slo, lo - 1)
+            state[cat] = (hi, shi) if lo == 1 else (slo, lo)
         q.append((modstate, then))
 
 
-result = sum(prod(hi - lo + 1 for lo, hi in state.values()) for state in accepted)
+result = sum(prod(hi - lo for lo, hi in state.values()) for state in accepted)
 print(result)
